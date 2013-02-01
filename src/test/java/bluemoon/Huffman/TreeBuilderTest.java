@@ -1,6 +1,8 @@
 package bluemoon.Huffman;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
@@ -14,6 +16,19 @@ public class TreeBuilderTest {
     @Before
     public void setUp() {
 	s = "aaaassssfucker".split("");
+    }
+
+    @Test
+    public void testEmptyWeight() {
+	String[] st = { "" };
+	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(st);
+	assertTrue(testMap.isEmpty());
+    }
+
+    @Test
+    public void testNonEmptyWeight() {
+	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
+	assertFalse(testMap.isEmpty());
     }
 
     @Test
