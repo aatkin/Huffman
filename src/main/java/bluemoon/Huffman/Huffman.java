@@ -17,5 +17,22 @@ public class Huffman {
 	for (Map.Entry<String, Integer> entry : wList.entrySet()) {
 	    System.out.println("Letter " + entry.getKey() + " : weight " + entry.getValue());
 	}
+
+	SortedMap<String, Integer> testMap = TreeBuilder.returnWeightedList(testString);
+	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
+	ArrayList<Node> huffTree = TreeBuilder.returnHuffTree(nodes);
+
+	Node iterableNode = huffTree.get(0);
+	String binary = "";
+	while (!iterableNode.isLeaf()) {
+	    if (iterableNode.getLeftChild() != null) {
+		iterableNode = iterableNode.getLeftChild();
+		binary += "0";
+	    } else {
+		iterableNode = iterableNode.getRightChild();
+		binary += "1";
+	    }
+	}
+	System.out.println("Node " + iterableNode.getLetter() + ": " + binary);
     }
 }

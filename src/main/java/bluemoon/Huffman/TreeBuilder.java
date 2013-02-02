@@ -30,14 +30,68 @@ public class TreeBuilder {
     }
 
     /**
-     * tässä pitäisi tehdä huffman-puu. under construction
+     * rakennetaan huffman-puu: ensimmäinen alkio on tyhjä parent-alkio, ja sen
+     * alle lisätään alkiot jännällä algoritmilla.
      */
     public static ArrayList<Node> returnHuffTree(ArrayList<Node> nodes) {
 
 	ArrayList<Node> tree = new ArrayList<Node>();
 
-	return null;
-    }
+	while (nodes.size() > 3) {
+	    Node newParent = new Node(0);
+
+	    if (nodes.get(0).getWeight() > (nodes.get(1).getWeight() + nodes.get(2).getWeight())) {
+
+		Node leftChild = nodes.get(1);
+		leftChild.setParent(newParent);
+		newParent.setLeftChild(leftChild);
+		leftChild.setLeaf(true);
+		nodes.remove(leftChild);
+
+		Node rightChild = nodes.get(2);
+		rightChild.setParent(newParent);
+		newParent.setRightChild(rightChild);
+		rightChild.setLeaf(true);
+		nodes.remove(rightChild);
+
+		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());
+
+		nodes.add(1, newParent);
+
+	    } else {
+
+		Node leftChild = nodes.get(0);
+		leftChild.setParent(newParent);
+		newParent.setLeftChild(leftChild);
+		leftChild.setLeaf(true);
+		nodes.remove(leftChild);
+
+		Node rightChild = nodes.get(1);
+		rightChild.setParent(newParent);
+		newParent.setRightChild(rightChild);
+		rightChild.setLeaf(true);
+		nodes.remove(rightChild);
+
+		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());
+
+		nodes.add(0, newParent);
+	    } // endof if-else
+	} // endof while
+
+	Node parentNode = new Node(0);
+
+	tree.add(parentNode);
+	tree.add(nodes.get(0));
+	tree.add(nodes.get(1));
+
+	parentNode.setLeftChild(tree.get(1));
+	tree.get(1).setParent(parentNode);
+
+	parentNode.setRightChild(tree.get(2));
+	tree.get(2).setParent(parentNode);
+
+	return tree;
+    } // endof returnHuffTree
 
     /**
      * tekee painotetuista map-arvoista Node-alkiot ja lisää ne sortattuun
