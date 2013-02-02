@@ -15,14 +15,20 @@ import java.util.*;
 public class TreeBuilder {
 
     /**
-     * tässä väännetään string-taulukosta (jossa mielivaltaisia alkioita n-kpl)
-     * treemap, missä alkioon liitetään sen todennäköisyys, siis kuinka monta
-     * kertaa se esiintyy kyseisessä taulukossa. for-loop alkaa i = 1:stä, koska
-     * jostain syystä String.split()-funkkari tekee taulun ensimmäisestä
-     * alkiosta tyhjän. .
+     * @throws IllegalArgumentException
+     * 
+     *             tässä väännetään string-taulukosta (jossa mielivaltaisia
+     *             alkioita n-kpl) treemap, missä alkioon liitetään sen
+     *             todennäköisyys, siis kuinka monta kertaa se esiintyy
+     *             kyseisessä taulukossa. for-loop alkaa i = 1:stä, koska
+     *             jostain syystä String.split()-funkkari tekee taulun
+     *             ensimmäisestä alkiosta tyhjän. .
      */
     public static SortedMap<String, Integer> returnWeightedList(String[] letters) {
 
+	if (letters.length < 3) {
+	    throw new IllegalArgumentException("String must be longer than 1");
+	}
 	SortedMap<String, Integer> wList = new TreeMap<String, Integer>();
 	int letterProbability = 0;
 
@@ -104,6 +110,8 @@ public class TreeBuilder {
 	/*
 	 * Lisätään puun ylimpänä olevat (lue: vasemman ja oikean puolen juuret)
 	 * alkiot arraylistiin ja määritetään tyhjä alkio koko puun juureksi.
+	 * Tähän voi myös korjata myöhemmin vain yhden alkion bugin (esimerkiksi
+	 * vain yhdestä kirjaimesta koostuvat merkkijonot).
 	 */
 	tree.add(parentNode);
 	tree.add(nodes.get(0));
