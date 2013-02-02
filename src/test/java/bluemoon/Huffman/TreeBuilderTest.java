@@ -46,7 +46,7 @@ public class TreeBuilderTest {
 	SortedMap<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
 	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
 
-	// nodes.get(0) = Node(2, "d")
+	// test nodes.get(0) = Node(2, "d")
 	assertTrue(nodes.get(0).getWeight() == 2);
 
 	// nodes.get(1) = Node(4, "a")
