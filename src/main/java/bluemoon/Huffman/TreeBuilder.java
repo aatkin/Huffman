@@ -2,6 +2,16 @@ package bluemoon.Huffman;
 
 import java.util.*;
 
+/**
+ * 
+ * @author Anssi
+ * 
+ *         Luokka Huffman-puun rakentamista varten. Luokassa on metodit
+ *         merkkijonossa esiintyvien kirjainten painojen (todennäköisyys
+ *         esiintyä tekstissä) laskemiselle, näiden painojen muuttamista
+ *         Nodeiksi ja Nodejen isä-lapsi-suhteiden muokkaamista Huffman-puuksi
+ *         varten.
+ */
 public class TreeBuilder {
 
     /**
@@ -30,13 +40,22 @@ public class TreeBuilder {
     }
 
     /**
-     * rakennetaan huffman-puu: ensimmäinen alkio on tyhjä parent-alkio, ja sen
-     * alle lisätään alkiot jännällä algoritmilla.
+     * rakennetaan huffman-puu: ensimmäinen alkio on tyhjä parent-alkio. ottaa
+     * alkiot parametrina annetusta nodes-listasta (joka on järjestetty
+     * pienimmästä esiintymämäärästä suurimpaan) ja lisää ne huffman-puuksi
+     * algoritmin mukaisesti. lehtisolmussa on aina jokin ei-null alkio, jonka
+     * lapset ovat null-alkioita. muissa solmuissa voi olla ei-null alkio, mutta
+     * niillä ei välttämättä ole alkiota.
      */
     public static ArrayList<Node> returnHuffTree(ArrayList<Node> nodes) {
 
 	ArrayList<Node> tree = new ArrayList<Node>();
 
+	/*
+	 * Iteroidaan nodes-listaa niin kauan, että jäljellä on vain 2 alkiota:
+	 * puun vasemman puolen juuri ja puun oikean puolen juuri. Kustakin
+	 * juuresta polveutuu sitten enemmän alkioita.
+	 */
 	while (nodes.size() >= 3) {
 	    Node newParent = new Node(0);
 
@@ -82,6 +101,10 @@ public class TreeBuilder {
 
 	Node parentNode = new Node(0);
 
+	/*
+	 * Lisätään puun ylimpänä olevat (lue: vasemman ja oikean puolen juuret)
+	 * alkiot arraylistiin ja määritetään tyhjä alkio koko puun juureksi.
+	 */
 	tree.add(parentNode);
 	tree.add(nodes.get(0));
 	tree.add(nodes.get(1));
