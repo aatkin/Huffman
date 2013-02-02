@@ -37,7 +37,7 @@ public class TreeBuilder {
 
 	ArrayList<Node> tree = new ArrayList<Node>();
 
-	while (nodes.size() > 3) {
+	while (nodes.size() >= 3) {
 	    Node newParent = new Node(0);
 
 	    if (nodes.get(0).getWeight() > (nodes.get(1).getWeight() + nodes.get(2).getWeight())) {
@@ -46,12 +46,13 @@ public class TreeBuilder {
 		leftChild.setParent(newParent);
 		newParent.setLeftChild(leftChild);
 		leftChild.setLeaf(true);
-		nodes.remove(leftChild);
 
 		Node rightChild = nodes.get(2);
 		rightChild.setParent(newParent);
 		newParent.setRightChild(rightChild);
 		rightChild.setLeaf(true);
+
+		nodes.remove(leftChild);
 		nodes.remove(rightChild);
 
 		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());
@@ -64,12 +65,13 @@ public class TreeBuilder {
 		leftChild.setParent(newParent);
 		newParent.setLeftChild(leftChild);
 		leftChild.setLeaf(true);
-		nodes.remove(leftChild);
 
 		Node rightChild = nodes.get(1);
 		rightChild.setParent(newParent);
 		newParent.setRightChild(rightChild);
 		rightChild.setLeaf(true);
+
+		nodes.remove(leftChild);
 		nodes.remove(rightChild);
 
 		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());

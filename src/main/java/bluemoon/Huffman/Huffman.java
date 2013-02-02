@@ -22,18 +22,14 @@ public class Huffman {
 	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
 	ArrayList<Node> huffTree = TreeBuilder.returnHuffTree(nodes);
 
-	Node iterableNode = huffTree.get(0);
-	String searchable = "e";
-	String binary = "";
-	while (!iterableNode.isLeaf()) {
-	    if (iterableNode.getLeftChild() != null) {
-		iterableNode = iterableNode.getLeftChild();
-		binary += "0";
-	    } else {
-		iterableNode = iterableNode.getRightChild();
-		binary += "1";
-	    }
+	Node parent = huffTree.get(0).getRightChild();
+
+	while (parent.getLeftChild() != null) {
+	    System.out.println("Parent " + parent.getLetter() + ": weight " + parent.getWeight());
+	    System.out.println("Left child " + parent.getLeftChild().getLetter() + ": weight " + parent.getLeftChild().getWeight());
+	    System.out.println("Right child " + parent.getRightChild().getLetter() + ": weight " + parent.getRightChild().getWeight()
+		    + "\n");
+	    parent = parent.getLeftChild();
 	}
-	System.out.println("Node " + iterableNode.getLetter() + ": " + binary);
     }
 }
