@@ -9,7 +9,7 @@ public class TreeBuilder {
      * treemap, missä alkioon liitetään sen todennäköisyys, siis kuinka monta
      * kertaa se esiintyy kyseisessä taulukossa. for-loop alkaa i = 1:stä, koska
      * jostain syystä String.split()-funkkari tekee taulun ensimmäisestä
-     * alkiosta tyhjän.
+     * alkiosta tyhjän. .
      */
     public static SortedMap<String, Integer> returnWeightedList(String[] letters) {
 

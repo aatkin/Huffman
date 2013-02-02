@@ -23,6 +23,7 @@ public class Huffman {
 	ArrayList<Node> huffTree = TreeBuilder.returnHuffTree(nodes);
 
 	Node iterableNode = huffTree.get(0);
+	String searchable = "e";
 	String binary = "";
 	while (!iterableNode.isLeaf()) {
 	    if (iterableNode.getLeftChild() != null) {
