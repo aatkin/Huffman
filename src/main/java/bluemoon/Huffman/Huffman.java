@@ -2,6 +2,14 @@ package bluemoon.Huffman;
 
 import java.util.*;
 
+/**
+ * 
+ * @author Anssi Kinnunen
+ * 
+ *         Pääohjelma Huffman-puun käyttämistä varten. Tässä on sitten joskus
+ *         koko ohjelman toiminta, enkoodausta ja dekoodausta myöten.
+ * 
+ */
 public class Huffman {
 
     public static void main(String[] args) {
@@ -22,14 +30,5 @@ public class Huffman {
 	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
 	ArrayList<Node> huffTree = TreeBuilder.returnHuffTree(nodes);
 
-	Node parent = huffTree.get(0).getRightChild();
-
-	while (parent.getLeftChild() != null) {
-	    System.out.println("Parent " + parent.getLetter() + ": weight " + parent.getWeight());
-	    System.out.println("Left child " + parent.getLeftChild().getLetter() + ": weight " + parent.getLeftChild().getWeight());
-	    System.out.println("Right child " + parent.getRightChild().getLetter() + ": weight " + parent.getRightChild().getWeight()
-		    + "\n");
-	    parent = parent.getLeftChild();
-	}
     }
 }

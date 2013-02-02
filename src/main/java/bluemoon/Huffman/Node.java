@@ -1,5 +1,12 @@
 package bluemoon.Huffman;
 
+/**
+ * 
+ * @author Anssi Kinnunen
+ * 
+ *         Luokka solmun esittämistä varten Huffman-puussa.
+ * 
+ */
 public class Node implements Comparable<Node> {
 
     private Node parent;

@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * 
- * @author Anssi
+ * @author Anssi Kinnunen
  * 
  *         Luokka Huffman-puun rakentamista varten. Luokassa on metodit
  *         merkkijonossa esiintyvien kirjainten painojen (todennäköisyys
