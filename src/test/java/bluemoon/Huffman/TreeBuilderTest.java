@@ -1,13 +1,10 @@
 package bluemoon.Huffman;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.util.Map;
+import java.util.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class TreeBuilderTest {
 
@@ -15,19 +12,21 @@ public class TreeBuilderTest {
 
     @Before
     public void setUp() {
-	s = "aaaassssfucker".split("");
+	s = "aaaassssdd".split("");
     }
 
     @Test
     public void testEmptyWeight() {
-	String[] st = { "" };
+	String[] st = {};
 	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(st);
+
 	assertTrue(testMap.isEmpty());
     }
 
     @Test
     public void testNonEmptyWeight() {
 	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
+
 	assertFalse(testMap.isEmpty());
     }
 
@@ -35,9 +34,29 @@ public class TreeBuilderTest {
     public void testWeights() {
 	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
 	int probabilityOfA = testMap.get("a");
-	int probabilityOfU = testMap.get("u");
+	int probabilityOfD = testMap.get("d");
+
 	assertEquals(4, probabilityOfA);
-	assertEquals(1, probabilityOfU);
+	assertEquals(2, probabilityOfD);
+	assertNotSame(3, probabilityOfA);
     }
 
+    @Test
+    public void testReturnNodes() {
+	SortedMap<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
+	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
+
+	// nodes.get(0) = Node(2, "d")
+	assertTrue(nodes.get(0).getWeight() == 2);
+
+	// nodes.get(1) = Node(4, "a")
+	assertTrue(nodes.get(1).getLetter().equals("a"));
+	assertTrue(nodes.get(1).getWeight() == 4);
+
+	// nodes.get(2) = Node(2, "s")
+	assertTrue(nodes.get(2).getLetter().equals("s"));
+	assertTrue(nodes.get(2).getWeight() == 4);
+
+	assertTrue(nodes.size() == 3);
+    }
 }
