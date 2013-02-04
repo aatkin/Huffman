@@ -16,7 +16,7 @@ public class Huffman {
 
 	SortedMap<String, String> codeList = new TreeMap<String, String>();
 
-	String sana = "aasdffdfgdfghhdfh1122354677";
+	String sana = "Söikö sika sanasi, vai mennäänkö metsään";
 	String[] testString = sana.split("");
 
 	SortedMap<String, Integer> wList = TreeBuilder.returnWeightedList(testString);

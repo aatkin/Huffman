@@ -14,16 +14,13 @@ public class Node implements Comparable<Node> {
     private Node rightChild;
     private int weight;
     private String letter;
-    private boolean isLeafNode;
 
     public Node(int weight, String letter) {
-	isLeafNode = true;
 	this.weight = weight;
 	this.letter = letter;
     }
 
     public Node(int weight) {
-	isLeafNode = false;
 	this.weight = weight;
     }
 
@@ -61,14 +58,6 @@ public class Node implements Comparable<Node> {
 
     public String getLetter() {
 	return letter;
-    }
-
-    public boolean isLeaf() {
-	return isLeafNode;
-    }
-
-    public void setLeaf(boolean value) {
-	isLeafNode = value;
     }
 
     public int compareTo(Node other) {
