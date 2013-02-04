@@ -16,14 +16,6 @@ public class TreeBuilderTest {
     }
 
     @Test
-    public void testEmptyWeight() {
-	String[] st = {};
-	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(st);
-
-	assertTrue(testMap.isEmpty());
-    }
-
-    @Test
     public void testNonEmptyWeight() {
 	Map<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
 
