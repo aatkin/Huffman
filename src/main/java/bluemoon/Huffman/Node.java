@@ -17,12 +17,13 @@ public class Node implements Comparable<Node> {
     private boolean isLeafNode;
 
     public Node(int weight, String letter) {
-	isLeafNode = false;
+	isLeafNode = true;
 	this.weight = weight;
 	this.letter = letter;
     }
 
     public Node(int weight) {
+	isLeafNode = false;
 	this.weight = weight;
     }
 

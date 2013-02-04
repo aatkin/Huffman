@@ -29,6 +29,7 @@ public class TreeBuilder {
 	if (letters.length < 3) {
 	    throw new IllegalArgumentException("String must be longer than 1");
 	}
+
 	SortedMap<String, Integer> wList = new TreeMap<String, Integer>();
 	int letterProbability = 0;
 
@@ -56,72 +57,45 @@ public class TreeBuilder {
     public static ArrayList<Node> returnHuffTree(ArrayList<Node> nodes) {
 
 	ArrayList<Node> tree = new ArrayList<Node>();
+	tree.add(new Node(0));
 
-	/*
-	 * Iteroidaan nodes-listaa niin kauan, että jäljellä on vain 2 alkiota:
-	 * puun vasemman puolen juuri ja puun oikean puolen juuri. Kustakin
-	 * juuresta polveutuu sitten enemmän alkioita.
-	 */
-	while (nodes.size() >= 3) {
-	    Node newParent = new Node(0);
+	while (nodes.size() > 2) {
+	    Collections.sort(nodes);
+	    Node tempP = new Node(0);
 
-	    if (nodes.get(0).getWeight() > (nodes.get(1).getWeight() + nodes.get(2).getWeight())) {
+	    nodes.get(0).setParent(tempP);
+	    tempP.setLeftChild(nodes.get(0));
+	    if (nodes.get(0).getLetter() != null) {
+		tree.add(nodes.get(0));
+	    }
 
-		Node leftChild = nodes.get(1);
-		leftChild.setParent(newParent);
-		newParent.setLeftChild(leftChild);
-		leftChild.setLeaf(true);
+	    nodes.get(1).setParent(tempP);
+	    tempP.setRightChild(nodes.get(1));
+	    if (nodes.get(1).getLetter() != null) {
+		tree.add(nodes.get(1));
+	    }
 
-		Node rightChild = nodes.get(2);
-		rightChild.setParent(newParent);
-		newParent.setRightChild(rightChild);
-		rightChild.setLeaf(true);
+	    tempP.setWeight(nodes.get(0).getWeight() + nodes.get(1).getWeight());
 
-		nodes.remove(leftChild);
-		nodes.remove(rightChild);
+	    nodes.remove(0);
+	    nodes.remove(0);
+	    nodes.add(0, tempP);
+	}
 
-		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());
+	// jos alkion kirjain ei ole null ja se on viimeinen tai toiseksi
+	// viimeinen alkio nodes-listassa, lisätään se huffman-puuhun
+	if (nodes.get(0).getLetter() != null) {
+	    tree.add(nodes.get(0));
+	}
+	if (nodes.get(1).getLetter() != null) {
+	    tree.add(nodes.get(1));
+	}
 
-		nodes.add(1, newParent);
+	nodes.get(0).setParent(tree.get(0));
+	tree.get(0).setLeftChild(nodes.get(0));
 
-	    } else {
-
-		Node leftChild = nodes.get(0);
-		leftChild.setParent(newParent);
-		newParent.setLeftChild(leftChild);
-		leftChild.setLeaf(true);
-
-		Node rightChild = nodes.get(1);
-		rightChild.setParent(newParent);
-		newParent.setRightChild(rightChild);
-		rightChild.setLeaf(true);
-
-		nodes.remove(leftChild);
-		nodes.remove(rightChild);
-
-		newParent.setWeight(leftChild.getWeight() + rightChild.getWeight());
-
-		nodes.add(0, newParent);
-	    } // endof if-else
-	} // endof while
-
-	Node parentNode = new Node(0);
-
-	/*
-	 * Lisätään puun ylimpänä olevat (lue: vasemman ja oikean puolen juuret)
-	 * alkiot arraylistiin ja määritetään tyhjä alkio koko puun juureksi.
-	 * Tähän voi myös korjata myöhemmin vain yhden alkion bugin (esimerkiksi
-	 * vain yhdestä kirjaimesta koostuvat merkkijonot).
-	 */
-	tree.add(parentNode);
-	tree.add(nodes.get(0));
-	tree.add(nodes.get(1));
-
-	parentNode.setLeftChild(tree.get(1));
-	tree.get(1).setParent(parentNode);
-
-	parentNode.setRightChild(tree.get(2));
-	tree.get(2).setParent(parentNode);
+	nodes.get(1).setParent(tree.get(0));
+	tree.get(0).setRightChild(nodes.get(1));
 
 	return tree;
     } // endof returnHuffTree
@@ -131,6 +105,10 @@ public class TreeBuilder {
      * arraylistiin
      */
     public static ArrayList<Node> returnNodes(Map<String, Integer> wList) {
+
+	if (wList.size() == 1) {
+	    throw new IllegalArgumentException("String must contain more than one different letters");
+	}
 
 	ArrayList<Node> nodes = new ArrayList<Node>();
 
