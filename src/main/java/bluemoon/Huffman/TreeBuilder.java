@@ -42,7 +42,6 @@ public class TreeBuilder {
 		wList.put(letters[i], letterProbability);
 	    }
 	}
-
 	return wList;
     }
 
@@ -50,9 +49,8 @@ public class TreeBuilder {
      * rakennetaan huffman-puu: ensimmäinen alkio on tyhjä parent-alkio. ottaa
      * alkiot parametrina annetusta nodes-listasta (joka on järjestetty
      * pienimmästä esiintymämäärästä suurimpaan) ja lisää ne huffman-puuksi
-     * algoritmin mukaisesti. lehtisolmussa on aina jokin ei-null alkio, jonka
-     * lapset ovat null-alkioita. muissa solmuissa voi olla ei-null alkio, mutta
-     * niillä ei välttämättä ole alkiota.
+     * algoritmin mukaisesti. lisätään alkiot, jotka ovat lehtisolmuja,
+     * tree-listaan.
      */
     public static ArrayList<Node> returnHuffTree(ArrayList<Node> nodes) {
 
@@ -83,7 +81,7 @@ public class TreeBuilder {
 	}
 
 	// jos alkion kirjain ei ole null ja se on viimeinen tai toiseksi
-	// viimeinen alkio nodes-listassa, lisätään se huffman-puuhun
+	// viimeinen alkio nodes-listassa, lisätään se tree-listaan
 	if (nodes.get(0).getLetter() != null) {
 	    tree.add(nodes.get(0));
 	}
@@ -97,12 +95,16 @@ public class TreeBuilder {
 	nodes.get(1).setParent(tree.get(0));
 	tree.get(0).setRightChild(nodes.get(1));
 
+	tree.get(0).setWeight(nodes.get(0).getWeight() + nodes.get(1).getWeight());
+
 	return tree;
     } // endof returnHuffTree
 
     /**
-     * tekee painotetuista map-arvoista Node-alkiot ja lisää ne sortattuun
-     * arraylistiin
+     * @throws IllegalArgumentException
+     * 
+     *             tekee painotetuista map-arvoista Node-alkiot ja lisää ne
+     *             sortattuun arraylistiin
      */
     public static ArrayList<Node> returnNodes(Map<String, Integer> wList) {
 
@@ -116,7 +118,51 @@ public class TreeBuilder {
 	    nodes.add(new Node(entry.getValue(), entry.getKey()));
 	}
 
-	Collections.sort(nodes);
 	return nodes;
+    }
+
+    /**
+     * Palauttaa koodilistat huffman-puun lehtisolmuille. Iteroidaan valmista
+     * huffman-puuta alkio kerrallaan, ja käydään jokaisen kohdalla läpi puuta
+     * lehtisolmusta juureen, kunnes saadaan oikea koodi, ja mapataan se
+     * TreeMap-rakenteeseen. Tässä on toistaiseksi koodille käytössä
+     * String-esitys, mutta eiköhän sekin voida vaihtaa hieman päätä
+     * raaputtamalla.
+     */
+    public static SortedMap<String, String> returnCodeList(ArrayList<Node> huffTree) {
+
+	SortedMap<String, String> codeList = new TreeMap<String, String>();
+
+	for (Node n : huffTree) {
+	    if (n.getParent() != null) {
+		String code = "";
+		Node temp = n;
+		while (temp.getParent() != null) {
+		    if (temp == temp.getParent().getLeftChild()) {
+			code += "0";
+		    } else if (temp == temp.getParent().getRightChild()) {
+			code += "1";
+		    }
+		    temp = temp.getParent();
+		}
+		// saatu koodaus on päinvastaisessa järjestyksessä, koska se
+		// muodostettiin lehtisolmusta juureen,
+		// joten se täytyy kääntää
+		codeList.put(n.getLetter(), new StringBuffer(code).reverse().toString());
+	    }
+	}
+	return codeList;
+    }
+
+    public static String returnEncodedMsg(SortedMap<String, String> codeList, String[] msg) {
+
+	String encoded = "";
+
+	for (String s : msg) {
+	    if (codeList.containsKey(s)) {
+		encoded += codeList.get(s);
+	    }
+	}
+	return encoded;
     }
 }
