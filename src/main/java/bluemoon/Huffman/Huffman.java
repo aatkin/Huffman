@@ -15,10 +15,14 @@ public class Huffman {
 
     public static void main(String[] args) {
 
+	String fileName = args[0];
+	if (fileName == null) {
+	    throw new IllegalArgumentException("File path must be provided");
+	}
 	// 1. Annetaan haluttu teksti Stringinä, ja tehdään siitä
 	// String[]-taulukko split()-funktiolla
-	String sana = "abbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	String[] testString = sana.split("");
+	String text = getInputStringFromFile(new File(fileName));
+	String[] testString = text.split("");
 
 	// 2. Muodostetaan edellisestä taulukosta TreeMap, joka on painotettu
 	// lista
@@ -49,12 +53,12 @@ public class Huffman {
 	File file = new File("huffman.txt");
 	outputBinaryToFile(file, binaryEncoded);
 
-	System.out.println("\nString: " + sana + "\nEncoded: " + encoded);
+	System.out.println("\nString: " + text + "\nEncoded: " + encoded);
 	System.out.println(encoded.length() + " bits");
 
 	byte[] utf8Bytes = null;
 	try {
-	    utf8Bytes = sana.getBytes("UTF-8");
+	    utf8Bytes = text.getBytes("UTF-8");
 	} catch (UnsupportedEncodingException e) {
 	    e.printStackTrace();
 	}
@@ -74,5 +78,25 @@ public class Huffman {
 	} catch (IOException ie) {
 	    ie.printStackTrace();
 	}
+    }
+
+    public static String getInputStringFromFile(File file) {
+	BufferedReader bReader;
+	String text = "";
+	try {
+	    bReader = new BufferedReader(new FileReader(file));
+	    StringBuilder sBuilder = new StringBuilder();
+	    String line = bReader.readLine();
+	    while (line != null) {
+		sBuilder.append(line);
+		line = bReader.readLine();
+	    }
+	    text = sBuilder.toString();
+	    bReader.close();
+
+	} catch (IOException ie) {
+	    ie.printStackTrace();
+	}
+	return text;
     }
 }
