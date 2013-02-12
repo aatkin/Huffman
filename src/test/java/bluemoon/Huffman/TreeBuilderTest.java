@@ -34,21 +34,17 @@ public class TreeBuilderTest {
     }
 
     @Test
-    public void testReturnNodes() {
-	SortedMap<String, Integer> testMap = TreeBuilder.returnWeightedList(s);
-	ArrayList<Node> nodes = TreeBuilder.returnNodes(testMap);
+    public void testBinaryMode() {
+	String[] testString = "aaabbbccddeeegghhjjjffgghhh".split("");
 
-	// test nodes.get(0) = Node(2, "d")
-	assertTrue(nodes.get(0).getWeight() == 2);
+	SortedMap<String, Integer> wList = TreeBuilder.returnWeightedList(testString);
+	ArrayList<Node> nodes = TreeBuilder.returnNodes(wList);
+	ArrayList<Node> huffTree = TreeBuilder.returnHuffTree(nodes);
+	SortedMap<String, String> codeList = TreeBuilder.returnCodeList(huffTree);
+	String encoded = TreeBuilder.returnEncodedMsg(codeList, testString);
 
-	// nodes.get(1) = Node(4, "a")
-	assertTrue(nodes.get(1).getLetter().equals("a"));
-	assertTrue(nodes.get(1).getWeight() == 4);
+	byte[] binaryStuff = TreeBuilder.returnBinaryEncodedMsg(codeList, encoded);
 
-	// nodes.get(2) = Node(2, "s")
-	assertTrue(nodes.get(2).getLetter().equals("s"));
-	assertTrue(nodes.get(2).getWeight() == 4);
-
-	assertTrue(nodes.size() == 3);
+	assertEquals(2, binaryStuff[0] & 0b10);
     }
 }

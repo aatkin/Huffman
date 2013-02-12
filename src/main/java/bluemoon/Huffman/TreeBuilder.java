@@ -59,25 +59,25 @@ public class TreeBuilder {
 
 	while (nodes.size() > 2) {
 	    Collections.sort(nodes);
-	    Node tempP = new Node(0);
+	    Node newParentNode = new Node(0);
 
-	    nodes.get(0).setParent(tempP);
-	    tempP.setLeftChild(nodes.get(0));
+	    nodes.get(0).setParent(newParentNode);
+	    newParentNode.setLeftChild(nodes.get(0));
 	    if (nodes.get(0).getLetter() != null) {
 		tree.add(nodes.get(0));
 	    }
 
-	    nodes.get(1).setParent(tempP);
-	    tempP.setRightChild(nodes.get(1));
+	    nodes.get(1).setParent(newParentNode);
+	    newParentNode.setRightChild(nodes.get(1));
 	    if (nodes.get(1).getLetter() != null) {
 		tree.add(nodes.get(1));
 	    }
 
-	    tempP.setWeight(nodes.get(0).getWeight() + nodes.get(1).getWeight());
+	    newParentNode.setWeight(nodes.get(0).getWeight() + nodes.get(1).getWeight());
 
 	    nodes.remove(0);
 	    nodes.remove(0);
-	    nodes.add(0, tempP);
+	    nodes.add(0, newParentNode);
 	}
 
 	// jos alkion kirjain ei ole null ja se on viimeinen tai toiseksi
@@ -91,10 +91,8 @@ public class TreeBuilder {
 
 	nodes.get(0).setParent(tree.get(0));
 	tree.get(0).setLeftChild(nodes.get(0));
-
 	nodes.get(1).setParent(tree.get(0));
 	tree.get(0).setRightChild(nodes.get(1));
-
 	tree.get(0).setWeight(nodes.get(0).getWeight() + nodes.get(1).getWeight());
 
 	return tree;
@@ -109,7 +107,7 @@ public class TreeBuilder {
     public static ArrayList<Node> returnNodes(Map<String, Integer> wList) {
 
 	if (wList.size() == 1) {
-	    throw new IllegalArgumentException("String must contain more than one different letters");
+	    throw new IllegalArgumentException("String must contain two or more different letters");
 	}
 
 	ArrayList<Node> nodes = new ArrayList<Node>();
@@ -117,17 +115,15 @@ public class TreeBuilder {
 	for (Map.Entry<String, Integer> entry : wList.entrySet()) {
 	    nodes.add(new Node(entry.getValue(), entry.getKey()));
 	}
-
 	return nodes;
     }
 
     /**
      * Palauttaa koodilistat huffman-puun lehtisolmuille. Iteroidaan valmista
-     * huffman-puuta alkio kerrallaan, ja käydään jokaisen kohdalla läpi puuta
-     * lehtisolmusta juureen, kunnes saadaan oikea koodi, ja mapataan se
-     * TreeMap-rakenteeseen. Tässä on toistaiseksi koodille käytössä
-     * String-esitys, mutta eiköhän sekin voida vaihtaa hieman päätä
-     * raaputtamalla.
+     * listaa alkio (listassa jokainen alkio vastaa lehtisolmua) kerrallaan, ja
+     * käydään jokaisen kohdalla läpi puuta lehtisolmusta juureen, kunnes
+     * saadaan oikea koodi, ja tallennetaan se TreeMap-rakenteeseen. Tässä on
+     * toistaiseksi koodille käytössä String-esitys.
      */
     public static SortedMap<String, String> returnCodeList(ArrayList<Node> huffTree) {
 
@@ -154,6 +150,9 @@ public class TreeBuilder {
 	return codeList;
     }
 
+    /**
+     * Palauttaa enkoodatun viestin String-muodossa.
+     */
     public static String returnEncodedMsg(SortedMap<String, String> codeList, String[] msg) {
 
 	String encoded = "";
@@ -162,6 +161,62 @@ public class TreeBuilder {
 	    if (codeList.containsKey(s)) {
 		encoded += codeList.get(s);
 	    }
+	}
+	return encoded;
+    }
+
+    /**
+     * Palauttaa enkoodatun viestin tavulistana. Olettaa, että encodedMsg on
+     * "bittimerkkijono". Tämän voinee myöhemmin muuttaa, jos tarve vaatii.
+     */
+    public static byte[] returnBinaryEncodedMsg(SortedMap<String, String> codeList, String encodedMsg) {
+
+	int byteslength = (int) Math.ceil(encodedMsg.length() / 8.0);
+	byte[] encoded = new byte[byteslength];
+	int msgIndex = 0;
+
+	for (int j = 0; j < encoded.length; j++) {
+	    for (int i = 0; i < 8; i++) {
+		// jos päästään viimeiseen tavuun ja bitit loppuvat kesken,
+		// shiftataan bittejä tavussa
+		// vasemmalle 7 - i kertaa ja lopetetaan looppi
+		if (msgIndex == encodedMsg.length()) {
+		    encoded[j] <<= (7 - i);
+		    break;
+		}
+		// ollaan tavun lopussa ja kohdataan nolla
+		else if (encodedMsg.charAt(msgIndex) == '0' && i == 7) {
+		    msgIndex++;
+		    continue;
+		}
+		// ollaan tavun lopussa ja kohdataan ykkönen
+		else if (encodedMsg.charAt(msgIndex) == '1' && i == 7) {
+		    encoded[j] |= 0b1;
+		}
+		// ollaan jossain päin tavua ja kohdataan ykkönen
+		else if (encodedMsg.charAt(msgIndex) == '1') {
+		    encoded[j] |= 0b1;
+		    encoded[j] <<= 1;
+		}
+		// ollaan jossain päin tavua ja kohdataan nolla
+		else {
+		    encoded[j] <<= 1;
+		}
+		// on saatu bitin käsittely loppuun, siirrytään merkkijonossa
+		// eteenpäin
+		msgIndex++;
+	    }
+	    // System.out.println("\n####DEBUG####\n");
+	    // String msg = "";
+	    // for (int h = 7; h >= 0; h--) {
+	    // if (((encoded[j] >> h) & 1) == 1) {
+	    // msg += "1";
+	    // } else {
+	    // msg += "0";
+	    // }
+	    // }
+	    // System.out.println("Current binary: " + encoded[j] + " : " +
+	    // msg);
 	}
 	return encoded;
     }
