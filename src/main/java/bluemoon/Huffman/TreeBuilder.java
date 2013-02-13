@@ -155,19 +155,19 @@ public class TreeBuilder {
      */
     public static String returnEncodedMsg(SortedMap<String, String> codeList, String[] msg) {
 
-	String encoded = "";
+	StringBuilder encoded = new StringBuilder();
 
 	for (String s : msg) {
 	    if (codeList.containsKey(s)) {
-		encoded += codeList.get(s);
+		encoded.append(codeList.get(s));
 	    }
 	}
-	return encoded;
+	return encoded.toString();
     }
 
     /**
      * Palauttaa enkoodatun viestin tavulistana. Olettaa, että encodedMsg on
-     * "bittimerkkijono". Tämän voinee myöhemmin muuttaa, jos tarve vaatii.
+     * "bittimerkkijono" (ks. funktio returnEncodedMsg())
      */
     public static byte[] returnBinaryEncodedMsg(SortedMap<String, String> codeList, String encodedMsg) {
 
@@ -191,11 +191,11 @@ public class TreeBuilder {
 		}
 		// ollaan tavun lopussa ja kohdataan ykkönen
 		else if (encodedMsg.charAt(msgIndex) == '1' && i == 7) {
-		    encoded[j] |= 0b1;
+		    encoded[j] |= 1;
 		}
 		// ollaan jossain päin tavua ja kohdataan ykkönen
 		else if (encodedMsg.charAt(msgIndex) == '1') {
-		    encoded[j] |= 0b1;
+		    encoded[j] |= 1;
 		    encoded[j] <<= 1;
 		}
 		// ollaan jossain päin tavua ja kohdataan nolla

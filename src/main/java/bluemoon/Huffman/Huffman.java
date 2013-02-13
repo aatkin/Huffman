@@ -15,6 +15,8 @@ public class Huffman {
 
     public static void main(String[] args) {
 
+	long timeBefore = System.currentTimeMillis();
+
 	String fileName = args[0];
 	if (fileName == null) {
 	    throw new IllegalArgumentException("File path must be provided");
@@ -53,17 +55,11 @@ public class Huffman {
 	File file = new File("huffman.txt");
 	outputBinaryToFile(file, binaryEncoded);
 
-	System.out.println("\nString: " + text + "\nEncoded: " + encoded);
-	System.out.println(encoded.length() + " bits");
+	// System.out.println("\nString: " + text + "\nEncoded: " + encoded);
+	System.out.println("wrote " + encoded.length() + " bits");
 
-	byte[] utf8Bytes = null;
-	try {
-	    utf8Bytes = text.getBytes("UTF-8");
-	} catch (UnsupportedEncodingException e) {
-	    e.printStackTrace();
-	}
-	System.out.println("For comparison, Java representation of the string in UTF-8 is " + utf8Bytes.length + " bytes (or around "
-		+ utf8Bytes.length * 8 + " bits).");
+	long timeAfter = System.currentTimeMillis() - timeBefore;
+	System.out.println(timeAfter + " ms");
     }
 
     public static void outputBinaryToFile(File file, byte[] binaryEncoded) {
