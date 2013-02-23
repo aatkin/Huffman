@@ -1,0 +1,10 @@
+# ignore eclipse-related files
+.classpath
+.project
+.settings/
+
+# ignore maven builds
+target/
+
+# ignore all .txt's
+*.txt
