@@ -79,6 +79,8 @@ public class TreeBuilder {
 	    nodes.remove(0);
 	    nodes.add(0, newParentNode);
 	}
+	
+	Collections.sort(nodes);
 
 	// jos alkion kirjain ei ole null ja se on viimeinen tai toiseksi
 	// viimeinen alkio nodes-listassa, lisätään se tree-listaan
