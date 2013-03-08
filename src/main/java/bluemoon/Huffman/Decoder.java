@@ -12,6 +12,8 @@ import java.util.*;
  */
 public class Decoder {
 
+    private static int encodedMsgLength = 0;
+
     public Decoder() {
 
     }
@@ -20,7 +22,7 @@ public class Decoder {
      * Decodes the contents of given (binary encoded) file. Utilizes a lookUp-table provided by 
      * Encoder-class. 
      * 
-     * @param lookUpFile
+     * @param lookUpFile LookUp-table for decoder.
      */
     public void decode(File lookUpFile, boolean debug) {
 	String rawLookUpMsg = readFromLookupFile();
@@ -39,7 +41,6 @@ public class Decoder {
     /**
      * Reads data from a pre-determined lookUp-table and returns it as a String.
      * 
-     * @param lookupFile File, where the lookUp-table for decodable message resides.
      * @return Raw data from the lookUp-table as a String.
      */
     public String readFromLookupFile() {
@@ -49,18 +50,16 @@ public class Decoder {
 	    System.exit(0);
 	}
 	BufferedReader bufReader;
-	StringBuilder sbBuilder = new StringBuilder();
-	String auxLine = "";
+	String line = "";
 	try {
 	    bufReader = new BufferedReader(new FileReader(lookUpFile));
-	    while ((auxLine = bufReader.readLine()) != null) {
-		sbBuilder.append(auxLine);
-	    }
+	    line = bufReader.readLine();
+	    encodedMsgLength = Integer.parseInt(bufReader.readLine());
 	    bufReader.close();
 	} catch (IOException ie) {
 	    ie.printStackTrace();
 	}
-	return sbBuilder.toString();
+	return line;
     }
 
     /**
@@ -92,7 +91,7 @@ public class Decoder {
      * Rebuilds the Huffman-tree from the given message.
      * 
      * @param message Message as a String.
-     * @return Huffman-tree as ArrayList< Node >.
+     * @return Huffman-tree as ArrayList<Node>.
      */
     public ArrayList<Node> rebuildHuffmanTree(String message) {
 	SortedMap<String, Integer> weightedList = TreeBuilder
@@ -108,7 +107,7 @@ public class Decoder {
      * by traversing the Huffman-tree as the original algorithm suggests. This type of decoding, however, is
      * painfully slow and is practically unusable for any text files over 30KB in size.
      * 
-     * @param huffmanTree Huffman-tree as ArrayList< Node >.
+     * @param huffmanTree Huffman-tree as ArrayList<Node>.
      * @return Decoded message as a String.
      */
     public String decodeMessage(ArrayList<Node> huffmanTree) {
@@ -120,13 +119,18 @@ public class Decoder {
 
 	// Reads binary input and creates string encoded message accordingly, adding 
 	// "1" or "0" to the string
+	// binaryEncodedMsg.length
+	int auxCalculator = encodedMsgLength;
 	for (int i = 0; i < binaryEncodedMsg.length; i++) {
 	    for (int j = 7; j >= 0; j--) {
-		if (((binaryEncodedMsg[i] >> j) & 1) == 1) {
+		if (auxCalculator == 0) {
+		    break;
+		} else if (((binaryEncodedMsg[i] >> j) & 1) == 1) {
 		    stringEncodedMsg.append("1");
 		} else {
 		    stringEncodedMsg.append("0");
 		}
+		auxCalculator -= 1;
 	    }
 	}
 	// Bit-by-bit-decoding method, "by the book". Painfully slow method for anything useful.

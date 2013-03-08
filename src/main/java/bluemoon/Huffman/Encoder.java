@@ -44,7 +44,7 @@ public class Encoder {
      * 
      * @param message Message to be encoded as a String.
      * @param debug If set to true, function will print out the weighted list.
-     * @return Huffman-tree as ArrayList< Node >.
+     * @return Huffman-tree as ArrayList<Node>.
      */
     public ArrayList<Node> buildHuffmanTree(String message, boolean debug) {
 	weightedList = TreeBuilder.createWeightedList(message);
@@ -62,7 +62,7 @@ public class Encoder {
     /**
      * Builds true binary encoded message into Byte[].
      * 
-     * @param huffmanTree Huffman-tree as ArrayList< Node >.
+     * @param huffmanTree Huffman-tree as ArrayList<Node>.
      * @param message Message to be encoded as String.
      * @param debug If set to true, function will print out code list.
      * @return Binary encoded message as Byte[].
@@ -119,7 +119,7 @@ public class Encoder {
      * BRP == pair separator (eg. symbol 'a' and related weight 10 would be aBRP10, as in "a 'BRP' 10")
      * BRL == pairs separator (eg. multiple pairs separated by BRL would be aBPR10BRLcBRP5 etc.)
      * 
-     * @param weightedList Weighted list as SortedMap< String, Integer >.
+     * @param weightedList Weighted list as SortedMap<String, Integer>.
      */
     public void createLookUpTable(SortedMap<String, Integer> weightedList,
 	    boolean debug) {
@@ -134,7 +134,8 @@ public class Encoder {
 	    }
 	}
 	File lookUpFile = new File("testiLookUp.txt");
-	writeToFile(lookUpFile, lookUpTableContents.toString());
+	writeToFile(lookUpFile, lookUpTableContents.toString() + "\r\n"
+		+ encodedMsgLength);
 	if (debug) {
 	    System.out.println("Created lookUp-table in file "
 		    + lookUpFile.getAbsolutePath());

@@ -12,12 +12,12 @@ import java.util.*;
 public class TreeBuilder {
 
     /**
-     * Attaches according weight to each symbol in a SortedMap< String, Integer >. Weight is the symbol's frequency 
+     * Attaches according weight to each symbol in a SortedMap<String, Integer>. Weight is the symbol's frequency 
      * in the given message.
      * 
      * @throws IllegalArgumentException Message has to be longer than 1
      * @param message String, which contains the message to be encoded.
-     * @return A weighted list of the type SortedMap< String, Integer >.
+     * @return A weighted list of the type SortedMap<String, Integer>.
      */
     public static SortedMap<String, Integer> createWeightedList(String message) {
 	if (message.length() < 2) {
@@ -44,12 +44,12 @@ public class TreeBuilder {
     }
 
     /**
-     * Creates a new node list of type ArrayList< Node > from a weighted list. The node list 
+     * Creates a new node list of type ArrayList<Node> from a weighted list. The node list 
      * contains an unordered group of nodes without links to their parents and children.
      * 
      * @throws IllegalArgumentException Message has to contain more than one different symbol
      * @param weightedList 
-     * @return Node list of type ArrayList< Node >.
+     * @return Node list of type ArrayList<Node>.
      */
     public static ArrayList<Node> createNodeList(
 	    SortedMap<String, Integer> weightedList) {
@@ -71,11 +71,11 @@ public class TreeBuilder {
      * each iteration, the first two nodes are linked to an empty parent node which has no symbol, 
      * but which has the combined weight of it's children. Child nodes are removed from the node list and
      * the parent node is added back to the nodes list. Nodes, which contain an symbol (also called leaf nodes), 
-     * are also added to the Huffman-tree ArrayList< Node >, which this function returns. Finally the 
+     * are also added to the Huffman-tree ArrayList<Node>, which this function returns. Finally the 
      * root node is added to the beginning of the Huffman-tree.
      * 
-     * @param nodes ArrayList< Node >, which contains >= 2 nodes.
-     * @return An ordered ArrayList< Node >, which contains the Huffman-tree's root node and all leaf nodes.
+     * @param nodes ArrayList<Node>, which contains >= 2 nodes.
+     * @return An ordered ArrayList<Node>, which contains the Huffman-tree's root node and all leaf nodes.
      */
     public static ArrayList<Node> createHuffmanTree(ArrayList<Node> nodes) {
 	ArrayList<Node> huffmanTree = new ArrayList<Node>();
@@ -121,15 +121,15 @@ public class TreeBuilder {
 	    }
 	} // endof while
 	return huffmanTree;
-    } // endof returnHuffTree
+    } // endof createHuffmanTree
 
     /**
      * Creates code list for the leaf nodes of Huffman-tree. The algorithm iterates the
      * tree for each node by traversing from the leaf node to root node, where being left child means 
-     * 0 (zero) and right child means 1 (one), since it's a binary tree. Codes are saved to a SortedMap < String, String >.
+     * 0 (zero) and right child means 1 (one), since it's a binary tree. Codes are saved to a SortedMap <String, String>.
      *
-     * @param huffmanTree Huffman-tree of the type ArrayList< Node >.
-     * @return SortedMap A complete code list of type SortedMap < String, String > for the Huffman-tree.
+     * @param huffmanTree Huffman-tree of the type ArrayList<Node>.
+     * @return SortedMap A complete code list of type SortedMap <String, String> for the Huffman-tree.
      */
     public static SortedMap<String, String> createCodeList(
 	    ArrayList<Node> huffmanTree) {
@@ -159,7 +159,7 @@ public class TreeBuilder {
      * Encodes the message into binary-looking String (eg. "1001010"). This can be used for simple 
      * tree traversal and also decoding.
      * 
-     * @param codeList Code list of type SortedMap< String, String >.
+     * @param codeList Code list of type SortedMap<String, String>.
      * @param message The message we want to encode in a String.
      * @return Encoded string that looks like binary.
      */
@@ -181,7 +181,7 @@ public class TreeBuilder {
      * "binary-string's" length. We then iterate the byte array, shifting the bits in each byte according to 
      * the binary-string to determine if the bit is 0 or 1. 
      * 
-     * @param codeList Code list of type SortedMap< String, String >.
+     * @param codeList Code list of type SortedMap<String, String>.
      * @param stringEncodedMsg String, which contains message encoded into "string-binary" (eg. "1001010").
      * @return Message encoded into true binary of type Byte[].
      */
